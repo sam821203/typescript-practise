@@ -1,45 +1,139 @@
-type AddFn = (a: number, b: number) => number;
-// interface AddFn {
-//   (a: number, b: number): number;
-// }
-
-let add: AddFn;
-
-add = (n1: number, n2: number) => {
-  return n1 + n2;
+type Admin = {
+  name: string;
+  privileges: string[];
 };
 
-interface Named {
-  readonly name?: string;
-  outputName?: string;
+type Employee = {
+  name: string;
+  startDate: Date;
+};
+
+type ElevatedEmployee = Admin & Employee;
+
+const e1: ElevatedEmployee = {
+  name: "Sam",
+  privileges: ["create-server"],
+  startDate: new Date(),
+};
+
+type Combinable = string | number;
+type Numeric = number | boolean;
+
+type Universal = Combinable & Numeric;
+
+// function add(a: number, b: number): number;
+// function add(a: string, b: string): string;
+// function add(a: string, b: number): string;
+// function add(a: number, b: string): string;
+
+function add(a: Combinable, b: Combinable) {
+  if (typeof a === "string" || typeof b === "number") {
+    return a.toString() + b.toString();
+  }
+  return a + b;
 }
 
-interface Greetable extends Named {
-  greet(phrase: string): void;
-}
+const result = add("Sam", 3);
+result.split(" ");
 
-class Person implements Greetable {
-  name?: string;
-  age = 29;
+const fetchedUserData = {
+  id: "u1",
+  name: "Sam",
+  job: {
+    title: "CEO",
+    description: "My title",
+  },
+};
 
-  constructor(n?: string) {
-    if (n) {
-      this.name = n;
-    }
+console.log(fetchedUserData?.job?.title);
+
+type UnknownEmployee = Employee | Admin;
+
+function printEmployeeInfo(emp: UnknownEmployee) {
+  console.log("Name: " + emp.name);
+
+  if ("privileges" in emp) {
+    console.log("Privileges" + emp.privileges);
   }
 
-  greet(phrase: string) {
-    if (this.name) {
-      console.log(phrase + " " + this.name);
-    } else {
-      console.log("Hi");
-    }
+  if ("startDate" in emp) {
+    console.log("StartDate" + emp.startDate);
   }
 }
 
-let user1: Greetable;
+printEmployeeInfo(e1);
 
-user1 = new Person();
+class Car {
+  drive() {
+    console.log("Driving...");
+  }
+}
 
-user1.greet("Hi there, I am");
-console.log(user1);
+class Truck {
+  drive() {
+    console.log("Driving Truck...");
+  }
+
+  loadCargo(amount: number) {
+    console.log("Loading cargo..." + amount);
+  }
+}
+
+type Vehicle = Car | Truck;
+
+const v1 = new Car();
+const v2 = new Truck();
+
+function useVehicle(vehicle: Vehicle) {
+  vehicle.drive();
+
+  if (vehicle instanceof Truck) {
+    vehicle.loadCargo(1000);
+  }
+}
+
+useVehicle(v1);
+useVehicle(v2);
+
+interface Bird {
+  type: "bird";
+  flyingSpeed: number;
+}
+
+interface Horse {
+  type: "horse";
+  runningSpeed: number;
+}
+
+type Animal = Bird | Horse;
+
+function moveAnimal(animal: Animal) {
+  let speed;
+
+  switch (animal.type) {
+    case "bird":
+      speed = animal.flyingSpeed;
+      break;
+    case "horse":
+      speed = animal.runningSpeed;
+      break;
+  }
+  console.log("Moving with speed: " + speed);
+}
+
+moveAnimal({ type: "bird", flyingSpeed: 10 });
+
+// const paragraph = document.querySelector("p");
+// const userInput = <HTMLInputElement>document.getElementById("userInput");
+const userInput = document.getElementById("userInput")! as HTMLInputElement;
+
+userInput.value = "Hi there!";
+
+interface ErrorContainer {
+  [prop: string]: string;
+}
+
+const errorBag: ErrorContainer = {
+  email: "Not a valid email email!",
+  userName: "Not a valid user name!",
+};
