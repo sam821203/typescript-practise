@@ -21,3 +21,4 @@ export abstract class Sorter {
     }
   }
 }
+console.log("HI");
