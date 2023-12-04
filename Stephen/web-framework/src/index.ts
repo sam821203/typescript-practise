@@ -1,6 +1,14 @@
 import { User } from "./models/User";
 
-const user = new User({ name: "John", age: 27 });
+const user = new User({ name: "name6", age: 50 });
 
-console.log(user.get("name"));
-console.log(user.get("age"));
+class Person {
+  constructor(public firstName: string, public lastName: string) {}
+
+  get fullName(): string {
+    return `${this.firstName} ${this.lastName}`;
+  }
+}
+
+const person = new Person("firstName", "lastName");
+console.log(person.fullName);
