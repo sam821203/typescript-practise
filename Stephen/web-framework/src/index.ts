@@ -1,14 +1,12 @@
+import { UserForm } from "./views/UserForm";
 import { User } from "./models/User";
 
-const user = new User({ name: "name6", age: 50 });
+const user = User.buildUser({ name: "John", age: 20 });
+const root = document.getElementById("root");
 
-class Person {
-  constructor(public firstName: string, public lastName: string) {}
-
-  get fullName(): string {
-    return `${this.firstName} ${this.lastName}`;
-  }
+if (root) {
+  const userForm = new UserForm(root, user);
+  userForm.render();
+} else {
+  throw new Error("Root element not found");
 }
-
-const person = new Person("firstName", "lastName");
-console.log(person.fullName);
